@@ -71,5 +71,9 @@ Levels: [
       this.sounds      = Object.construct(Pong.Sounds, this);
       this.runner.start();
     }.bind(this));
-  }
+  },
+
+  startDemo:         function() { this.start(0); },
+  startSinglePlayer: function() { this.start(1); },
+  startDoublePlayer: function() { this.start(2); },
 }
