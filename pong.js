@@ -178,17 +178,21 @@ Pong = {
             var dx = this.ball.dx;
             var dy = this.ball.dy;
             this.ball.update(dt, this.leftPaddle, this.rightPaddle);
-            if (this.ball.dx < 0 && dx > 0)
+            if (this.ball.dx < 0 && dx > 0) {
                 this.sounds.ping();
-            else if (this.ball.dx > 0 && dx < 0)
+			}
+            else if (this.ball.dx > 0 && dx < 0) {
                 this.sounds.pong();
-            else if (this.ball.dy * dy < 0)
+			}
+            else if (this.ball.dy * dy < 0) {
                 this.sounds.wall();
-
-            if (this.ball.left > this.width)
+			}
+            if (this.ball.left > this.width) {
                 this.goal(0);
-            else if (this.ball.right < 0)
+			}
+            else if (this.ball.right < 0) {
                 this.goal(1);
+			}
         }
     },
 
@@ -217,16 +221,24 @@ Pong = {
                 this.stop(true);
                 break;
             case Game.KEY.Q:
-                if (!this.leftPaddle.auto) this.leftPaddle.moveUp();
+                if (!this.leftPaddle.auto) {
+				    this.leftPaddle.moveUp();
+				}
                 break;
             case Game.KEY.A:
-                if (!this.leftPaddle.auto) this.leftPaddle.moveDown();
+                if (!this.leftPaddle.auto) {
+				    this.leftPaddle.moveDown();
+				}
                 break;
             case Game.KEY.P:
-                if (!this.rightPaddle.auto) this.rightPaddle.moveUp();
+                if (!this.rightPaddle.auto) {
+				    this.rightPaddle.moveUp();
+				}
                 break;
             case Game.KEY.L:
-                if (!this.rightPaddle.auto) this.rightPaddle.moveDown();
+                if (!this.rightPaddle.auto) {
+				    this.rightPaddle.moveDown();
+				}
                 break;
         }
     },
@@ -234,16 +246,24 @@ Pong = {
     onkeyup: function(keyCode) {
         switch (keyCode) {
             case Game.KEY.Q:
-                if (!this.leftPaddle.auto) this.leftPaddle.stopMovingUp();
+                if (!this.leftPaddle.auto) {
+				    this.leftPaddle.stopMovingUp();
+				}
                 break;
             case Game.KEY.A:
-                if (!this.leftPaddle.auto) this.leftPaddle.stopMovingDown();
+                if (!this.leftPaddle.auto) {
+				    this.leftPaddle.stopMovingDown();
+				}
                 break;
             case Game.KEY.P:
-                if (!this.rightPaddle.auto) this.rightPaddle.stopMovingUp();
+                if (!this.rightPaddle.auto) {
+				    this.rightPaddle.stopMovingUp();
+				}
                 break;
             case Game.KEY.L:
-                if (!this.rightPaddle.auto) this.rightPaddle.stopMovingDown();
+                if (!this.rightPaddle.auto) {
+				    this.rightPaddle.stopMovingDown();
+				}
                 break;
         }
     },
@@ -301,10 +321,12 @@ Pong = {
         draw: function(ctx) {
             ctx.drawImage(this.press1.image, this.press1.x, this.press1.y);
             ctx.drawImage(this.press2.image, this.press2.x, this.press2.y);
-            if (this.winner == 0)
+            if (this.winner == 0) {
                 ctx.drawImage(this.winner1.image, this.winner1.x, this.winner1.y);
-            else if (this.winner == 1)
+			}
+            else if (this.winner == 1) {
                 ctx.drawImage(this.winner2.image, this.winner2.x, this.winner2.y);
+			}
         }
 
     },
@@ -329,8 +351,9 @@ Pong = {
         },
 
         play: function(name) {
-            if (this.supported && this.game.cfg.sound && this.files[name])
+            if (this.supported && this.game.cfg.sound && this.files[name]) {
                 this.files[name].play();
+			}
         },
 
         ping: function() {
@@ -407,20 +430,27 @@ Pong = {
             ctx.fillStyle = Pong.Colors.score;
             var dw = dh = this.ww * 4 / 5;
             var blocks = Pong.Court.DIGITS[n];
-            if (blocks[0])
+            if (blocks[0]) {
                 ctx.fillRect(x, y, w, dh);
-            if (blocks[1])
+			}
+            if (blocks[1]) {
                 ctx.fillRect(x, y, dw, h / 2);
-            if (blocks[2])
+			}
+            if (blocks[2]) {
                 ctx.fillRect(x + w - dw, y, dw, h / 2);
-            if (blocks[3])
+			}
+            if (blocks[3]) {
                 ctx.fillRect(x, y + h / 2 - dh / 2, w, dh);
-            if (blocks[4])
+			}
+            if (blocks[4]) {
                 ctx.fillRect(x, y + h / 2, dw, h / 2);
-            if (blocks[5])
+			}
+            if (blocks[5]) {
                 ctx.fillRect(x + w - dw, y + h / 2, dw, h / 2);
-            if (blocks[6])
+			}
+            if (blocks[6]) {
                 ctx.fillRect(x, y + h - dh, w, dh);
+			}
         },
 
         DIGITS: [
@@ -480,21 +510,25 @@ Pong = {
         },
 
         setLevel: function(level) {
-            if (this.auto)
+            if (this.auto) {
                 this.level = Pong.Levels[level];
+			}
         },
 
         update: function(dt, ball) {
-            if (this.auto)
+            if (this.auto) {
                 this.ai(dt, ball);
+			}
 
             var amount = this.down - this.up;
             if (amount != 0) {
                 var y = this.y + (amount * dt * this.speed);
-                if (y < this.minY)
+                if (y < this.minY) {
                     y = this.minY;
-                else if (y > this.maxY)
+				}
+                else if (y > this.maxY) {
                     y = this.maxY;
+				}
                 this.setpos(this.x, y);
             }
         },
@@ -524,7 +558,6 @@ Pong = {
         },
 
         predict: function(ball, dt) {
-            // only re-predict if the ball changed direction, or its been some amount of time since last prediction
             if (this.prediction &&
                 ((this.prediction.dx * ball.dx) > 0) &&
                 ((this.prediction.dy * ball.dy) > 0) &&
@@ -640,8 +673,9 @@ Pong = {
                         x: this.x,
                         y: this.y
                     });
-                    if (this.footprints.length > 50)
+                    if (this.footprints.length > 50) {
                         this.footprints.shift();
+					}
                     this.footprintCount = 5;
                 } else {
                     this.footprintCount--;
@@ -679,10 +713,12 @@ Pong = {
                 }
 
                 // add/remove spin based on paddle direction
-                if (paddle.up)
+                if (paddle.up) {
                     pos.dy = pos.dy * (pos.dy < 0 ? 0.5 : 1.5);
-                else if (paddle.down)
+				}
+                else if (paddle.down) {
                     pos.dy = pos.dy * (pos.dy > 0 ? 0.5 : 1.5);
+				}
             }
 
             this.setpos(pos.x, pos.y);
