@@ -4,14 +4,14 @@
 Pong = {
 
     Defaults: {
-        width: 640, // logical canvas width (browser will scale to physical canvas size - which is controlled by @media css queries)
-        height: 480, // logical canvas height (ditto)
+        width: 640,
+        height: 480,
         wallWidth: 12,
         paddleWidth: 12,
         paddleHeight: 60,
-        paddleSpeed: 2, // should be able to cross court vertically   in 2 seconds
-        ballSpeed: 4, // should be able to cross court horizontally in 4 seconds, at starting speed ...
-        ballAccel: 8, // ... but accelerate as time passes
+        paddleSpeed: 2,
+        ballSpeed: 4,
+        ballAccel: 8,
         ballRadius: 5,
         sound: true
     },
@@ -34,71 +34,71 @@ Pong = {
     Levels: [{
             aiReaction: 0.2,
             aiError: 40
-        }, // 0:  ai is losing by 8
+        },
         {
             aiReaction: 0.3,
             aiError: 50
-        }, // 1:  ai is losing by 7
+        },
         {
             aiReaction: 0.4,
             aiError: 60
-        }, // 2:  ai is losing by 6
+        },
         {
             aiReaction: 0.5,
             aiError: 70
-        }, // 3:  ai is losing by 5
+        },
         {
             aiReaction: 0.6,
             aiError: 80
-        }, // 4:  ai is losing by 4
+        },
         {
             aiReaction: 0.7,
             aiError: 90
-        }, // 5:  ai is losing by 3
+        },
         {
             aiReaction: 0.8,
             aiError: 100
-        }, // 6:  ai is losing by 2
+        },
         {
             aiReaction: 0.9,
             aiError: 110
-        }, // 7:  ai is losing by 1
+        },
         {
             aiReaction: 1.0,
             aiError: 120
-        }, // 8:  tie
+        },
         {
             aiReaction: 1.1,
             aiError: 130
-        }, // 9:  ai is winning by 1
+        },
         {
             aiReaction: 1.2,
             aiError: 140
-        }, // 10: ai is winning by 2
+        },
         {
             aiReaction: 1.3,
             aiError: 150
-        }, // 11: ai is winning by 3
+        },
         {
             aiReaction: 1.4,
             aiError: 160
-        }, // 12: ai is winning by 4
+        },
         {
             aiReaction: 1.5,
             aiError: 170
-        }, // 13: ai is winning by 5
+        },
         {
             aiReaction: 1.6,
             aiError: 180
-        }, // 14: ai is winning by 6
+        },
         {
             aiReaction: 1.7,
             aiError: 190
-        }, // 15: ai is winning by 7
+        },
         {
             aiReaction: 1.8,
             aiError: 200
-        } // 16: ai is winning by 8
+        }
     ],
 
     //-----------------------------------------------------------------------------
@@ -370,7 +370,7 @@ Pong = {
                 height: ww
             });
             var nMax = (h / (ww * 2));
-            for (var n = 0; n < nMax; n++) { // draw dashed halfway line
+            for (var n = 0; n < nMax; n++) {
                 this.walls.push({
                     x: (w / 2) - (ww / 2),
                     y: (ww / 2) + (ww * 2 * n),

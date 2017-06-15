@@ -1,3 +1,13 @@
+/**
+* Игра
+*
+* Класс 
+*
+* @author polyakov
+* @version 1.0
+* @copyright GNU Public License
+* @todo Реализовать все методы
+*/
 if (!Function.prototype.bind) {
     Function.prototype.bind = function(obj) {
         var slice = [].slice,
@@ -50,16 +60,16 @@ Game = {
         return Object.create &&
             Object.extend &&
             Function.bind &&
-            document.addEventListener && // HTML5 standard, all modern browsers that support canvas should also support add/removeEventListener
+            document.addEventListener &&
             Game.ua.hasCanvas
     },
 
     start: function(id, game, cfg) {
         if (Game.compatible())
-            return Object.construct(Game.Runner, id, game, cfg).game; // return the game instance, not the runner (caller can always get at the runner via game.runner)
+            return Object.construct(Game.Runner, id, game, cfg).game;
     },
 
-    ua: function() { // should avoid user agent sniffing... but sometimes you just gotta do what you gotta do
+    ua: function() {
         var ua = navigator.userAgent.toLowerCase();
         var key = ((ua.indexOf("opera") > -1) ? "opera" : null);
         key = key || ((ua.indexOf("firefox") > -1) ? "firefox" : null);
@@ -106,14 +116,14 @@ Game = {
     createAudio: function(src) {
         try {
             var a = new Audio(src);
-            a.volume = 0.1; // lets be real quiet please
+            a.volume = 0.1;
             return a;
         } catch (e) {
             return null;
         }
     },
 
-    loadImages: function(sources, callback) { /* load multiple images and callback when ALL have finished loading */
+    loadImages: function(sources, callback) {
         var images = {};
         var count = sources ? sources.length : 0;
         if (count == 0) {
@@ -170,7 +180,7 @@ Game = {
     Runner: {
 
         initialize: function(id, game, cfg) {
-            this.cfg = Object.extend(game.Defaults || {}, cfg || {}); // use game defaults (if any) and extend with custom cfg (if any)
+            this.cfg = Object.extend(game.Defaults || {}, cfg || {});
             this.fps = this.cfg.fps || 60;
             this.interval = 1000.0 / this.fps;
             this.canvas = document.getElementById(id);
@@ -187,10 +197,10 @@ Game = {
             this.addEvents();
             this.resetStats();
 
-            this.game = Object.construct(game, this, this.cfg); // finally construct the game object itself
+            this.game = Object.construct(game, this, this.cfg);
         },
 
-        start: function() { // game instance should call runner.start() when its finished initializing and is ready to start the game loop
+        start: function() {
             this.lastFrame = Game.timestamp();
             this.timer = setInterval(this.loop.bind(this), this.interval);
         },
@@ -201,7 +211,7 @@ Game = {
 
         loop: function() {
             var start = Game.timestamp();
-            this.update((start - this.lastFrame) / 1000.0); // send dt as seconds
+            this.update((start - this.lastFrame) / 1000.0);
             var middle = Game.timestamp();
             this.draw();
             var end = Game.timestamp();
@@ -270,14 +280,14 @@ Game = {
         },
 
         alert: function(msg) {
-            this.stop(); // alert blocks thread, so need to stop game loop in order to avoid sending huge dt values to next update
+            this.stop();
             result = window.alert(msg);
             this.start();
             return result;
         },
 
         confirm: function(msg) {
-            this.stop(); // alert blocks thread, so need to stop game loop in order to avoid sending huge dt values to next update
+            this.stop(); 
             result = window.confirm(msg);
             this.start();
             return result;
