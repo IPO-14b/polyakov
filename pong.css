@@ -20,6 +20,7 @@ body { background-color: black; color: #AAA; font-size: 12pt; padding: 1em; }
 #sidebar .description           { margin-bottom: 2em; }
 #sidebar .description b         { font-weight: normal; color: #FFF; }
 
+
 @media screen and (min-width: 0px) {
   #sidebar { display: none; }
   #game    { display: block; width: 480px; height: 360px; margin: 0 auto; }
