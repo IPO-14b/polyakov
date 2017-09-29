@@ -71,3 +71,12 @@ window.requestAnimFrame = (function(){
 		// Push two new paddles into the paddles[] array
         paddles.push(new Paddle("bottom"));
         paddles.push(new Paddle("top"));
+		
+		// Ball object
+        ball = {
+            x: 50,
+            y: 50,
+            r: 5,
+            c: "white",
+            vx: 4,
+            vy: 8,
