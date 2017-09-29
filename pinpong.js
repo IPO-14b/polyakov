@@ -29,3 +29,7 @@ window.requestAnimFrame = (function(){
 
         // Initialise the collision sound
         collision = document.getElementById("collide");
+		
+        // Set the canvas's height and width to full screen
+        canvas.width = W;
+        canvas.height = H;
