@@ -25,3 +25,6 @@ window.requestAnimFrame = (function(){
 			H = window.innerHeight, // Window's height
             particles = [], // Array containing particles
             ball = {}, // Ball object
+			paddles = [2], // Array containing two paddles
+            mouse = {}, // Mouse object to store it's current position
+            points = 0, // Varialbe to store points
