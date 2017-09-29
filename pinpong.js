@@ -26,3 +26,6 @@ window.requestAnimFrame = (function(){
         // Add mousemove and mousedown events to the canvas
         canvas.addEventListener("mousemove", trackPosition, true);
         canvas.addEventListener("mousedown", btnClick, true);
+
+        // Initialise the collision sound
+        collision = document.getElementById("collide");
