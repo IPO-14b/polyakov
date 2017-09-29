@@ -28,3 +28,6 @@ window.requestAnimFrame = (function(){
 			paddles = [2], // Array containing two paddles
             mouse = {}, // Mouse object to store it's current position
             points = 0, // Varialbe to store points
+			fps = 60, // Max FPS (frames per second)
+            particlesCount = 20, // Number of sparks when ball strikes the paddle
+            flag = 0, // Flag variable which is changed on collision
