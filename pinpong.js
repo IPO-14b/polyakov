@@ -22,3 +22,7 @@ window.requestAnimFrame = (function(){
         var canvas = document.getElementById("canvas"),
             ctx = canvas.getContext("2d"), // Create canvas context
             W = window.innerWidth, // Window's width
+			
+        // Add mousemove and mousedown events to the canvas
+        canvas.addEventListener("mousemove", trackPosition, true);
+        canvas.addEventListener("mousedown", btnClick, true);
