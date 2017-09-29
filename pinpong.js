@@ -22,3 +22,6 @@ window.requestAnimFrame = (function(){
         var canvas = document.getElementById("canvas"),
             ctx = canvas.getContext("2d"), // Create canvas context
             W = window.innerWidth, // Window's width
+			H = window.innerHeight, // Window's height
+            particles = [], // Array containing particles
+            ball = {}, // Ball object
