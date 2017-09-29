@@ -55,3 +55,9 @@ window.requestAnimFrame = (function(){
             ctx.fillStyle = "black";
             ctx.fillRect(0, 0, W, H);
         }
+		
+		// Function for creating paddles
+        function Paddle(pos) {
+            // Height and width
+            this.h = 5;
+            this.w = 150;
