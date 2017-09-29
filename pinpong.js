@@ -49,3 +49,9 @@ window.requestAnimFrame = (function(){
         // Set the canvas's height and width to full screen
         canvas.width = W;
         canvas.height = H;
+		
+		// Function to paint canvas
+        function paintCanvas() {
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, W, H);
+        }
