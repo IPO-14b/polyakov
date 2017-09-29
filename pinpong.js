@@ -1,3 +1,6 @@
+/**
+ * API-интерфейс браузера для получения плавной анимации
+ */
 window.requestAnimFrame = (function() {
     return window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
@@ -9,6 +12,9 @@ window.requestAnimFrame = (function() {
         };
 })();
 
+/**
+ * Отмена запроса
+ */
 window.cancelRequestAnimFrame = (function() {
     return window.cancelAnimationFrame ||
         window.webkitCancelRequestAnimationFrame ||
@@ -18,61 +24,113 @@ window.cancelRequestAnimFrame = (function() {
         clearTimeout
 })();
 
-// Initialize canvas and required variables
+/**
+ *
+ * Инициализация холста и переменных
+ *
+ *@var object ctx
+ *@var int W
+ *@var int H
+ *@var int particles
+ *@var object ball
+ *@var int paddles
+ *@var object mous
+ *@var int points
+ *@var int fps
+ *@var int particlesCount
+ *@var int flag
+ *@var object particlePos
+ *@var int multipler
+ *@var object startBtn
+ *@var object restartBtn
+ *@var int over
+ *@var int init
+ */
 var canvas = document.getElementById("canvas"),
-    ctx = canvas.getContext("2d"), // Create canvas context
-    W = window.innerWidth, // Window's width
-    H = window.innerHeight, // Window's height
-    particles = [], // Array containing particles
-    ball = {}, // Ball object
-    paddles = [2], // Array containing two paddles
-    mouse = {}, // Mouse object to store it's current position
-    points = 0, // Varialbe to store points
-    fps = 60, // Max FPS (frames per second)
-    particlesCount = 20, // Number of sparks when ball strikes the paddle
-    flag = 0, // Flag variable which is changed on collision
-    particlePos = {}, // Object to contain the position of collision 
-    multipler = 1, // Varialbe to control the direction of sparks
-    startBtn = {}, // Start button object
-    restartBtn = {}, // Restart button object
-    over = 0, // flag varialbe, cahnged when the game is over
-    init, // variable to initialize animation
+    ctx = canvas.getContext("2d"),
+    W = window.innerWidth,
+    H = window.innerHeight,
+    particles = [],
+    ball = {},
+    paddles = [2],
+    mouse = {},
+    points = 0,
+    fps = 60,
+    particlesCount = 20,
+    flag = 0,
+    particlePos = {},
+    multipler = 1,
+    startBtn = {},
+    restartBtn = {},
+    over = 0,
+    init,
     paddleHit;
 
-// Add mousemove and mousedown events to the canvas
+/**
+ * Добавить события mousemove и mousedown на холст
+ */
 canvas.addEventListener("mousemove", trackPosition, true);
 canvas.addEventListener("mousedown", btnClick, true);
 
-// Initialise the collision sound
+/*
+ * Инициализировать звук столкновения
+ */
 collision = document.getElementById("collide");
 
-// Set the canvas's height and width to full screen
+/*
+ * Установите ширину и ширину холста в полноэкранном режиме.
+ */
 canvas.width = W;
 canvas.height = H;
 
-// Function to paint canvas
+/*
+ * Функция рисования холста
+ */
 function paintCanvas() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, W, H);
 }
 
-// Function for creating paddles
+/*
+ * Функция создания весла
+ */
 function Paddle(pos) {
-    // Height and width
+    /*
+     * Высота и ширина
+     *
+     * @var int h
+     * @var int w
+     */
     this.h = 5;
     this.w = 150;
 
-    // Paddle's position
+    /*
+     * Позиция доски
+     *
+     * @var int y
+     * @var int x
+     */
     this.x = W / 2 - this.w / 2;
     this.y = (pos == "top") ? 0 : H - this.h;
 
 }
 
-// Push two new paddles into the paddles[] array
+/*
+ * Вставьте два новых весла в массив paddles []
+ */
 paddles.push(new Paddle("bottom"));
 paddles.push(new Paddle("top"));
 
-// Ball object
+/*
+ * Объект Ball
+ *
+ *@var int x
+ *@var int y
+ *@var int r
+ *@var object c
+ *@var int vx
+ *@var int vy
+ */
 ball = {
     x: 50,
     y: 50,
@@ -81,7 +139,9 @@ ball = {
     vx: 4,
     vy: 8,
 
-    // Function for drawing ball on canvas
+    /*
+     * Функция рисования шара на холсте
+     */
     draw: function() {
         ctx.beginPath();
         ctx.fillStyle = this.c;
@@ -90,8 +150,14 @@ ball = {
     }
 };
 
-
-// Start Button object
+/*
+ * Объект Button
+ *
+ *@var int w
+ *@var int h
+ *@var int x
+ *@var int y
+ */
 startBtn = {
     w: 100,
     h: 50,
@@ -111,7 +177,14 @@ startBtn = {
     }
 };
 
-// Restart Button object
+/*
+ * Объект Restart Button
+ *
+ *@var int w
+ *@var int h
+ *@var int x
+ *@var int y
+ */
 restartBtn = {
     w: 100,
     h: 50,
@@ -131,7 +204,14 @@ restartBtn = {
     }
 };
 
-// Function for creating particles object
+/*
+ * Функция создания объекта частиц
+ *
+ *@var int x
+ *@var int y
+ *@var int vx
+ *@var int vy
+ */
 function createParticles(x, y, m) {
     this.x = x || 0;
     this.y = y || 0;
@@ -142,7 +222,9 @@ function createParticles(x, y, m) {
     this.vy = m * Math.random() * 1.5;
 }
 
-// Draw everything on canvas
+/*
+ * Рисуем все на холсте
+ */
 function draw() {
     paintCanvas();
     for (var i = 0; i < paddles.length; i++) {
@@ -156,7 +238,9 @@ function draw() {
     update();
 }
 
-// Function to increase speed after every 5 points
+/*
+ * Функция увеличения скорости после каждых 5 точек
+ */
 function increaseSpd() {
     if (points % 4 == 0) {
         if (Math.abs(ball.vx) < 15) {
@@ -166,20 +250,28 @@ function increaseSpd() {
     }
 }
 
-// Track the position of mouse cursor
+/*
+ * Отслеживание положения курсора мыши
+ */
 function trackPosition(e) {
     mouse.x = e.pageX;
     mouse.y = e.pageY;
 }
 
-// Function to update positions, score and everything.
-// Basically, the main game logic is defined here
+/*
+ * Функция для обновления позиций, оценки и всего.
+ * В принципе, основная логика игры определена здесь
+ */
 function update() {
 
-    // Update scores
+    /*
+     * Обновлять счёт
+     */
     updateScore();
 
-    // Move the paddles on mouse move
+    /*
+     * Перемещение весла при перемещении мыши
+     */
     if (mouse.x && mouse.y) {
         for (var i = 1; i < paddles.length; i++) {
             p = paddles[i];
@@ -187,27 +279,37 @@ function update() {
         }
     }
 
-    // Move the ball
+    /*
+     * Перемещение мяча
+     */
     ball.x += ball.vx;
     ball.y += ball.vy;
 
-    // Collision with paddles
+    /*
+     * Столкновение с веслами
+     */
     p1 = paddles[1];
     p2 = paddles[2];
 
-    // If the ball strikes with paddles,
-    // invert the y-velocity vector of ball,
-    // increment the points, play the collision sound,
-    // save collision's position so that sparks can be
-    // emitted from that position, set the flag variable,
-    // and change the multiplier
+    /*
+     * Если мяч ударяет лопастями,
+     * инвертируем вектор скорости y шара,
+     * увеличиваем точки, воспроизводим звук столкновения,
+     * сохраняем позицию столкновения, чтобы искры могли
+     * Исходя из этой позиции, установите переменную флага,
+     * и изменим множитель
+     */
     if (collides(ball, p1)) {
         collideAction(ball, p1);
     } else if (collides(ball, p2)) {
         collideAction(ball, p2);
     } else {
-        // Collide with walls, If the ball hits the top/bottom,
-        // walls, run gameOver() function
+
+        /*
+         * Столкновение со стенами, Если мяч попадает в верхнюю / нижнюю часть,
+         * стены, запустите функцию gameOver ()
+         */
+
         if (ball.y + ball.r > H) {
             ball.y = H - ball.r;
             gameOver();
@@ -216,8 +318,10 @@ function update() {
             gameOver();
         }
 
-        // If ball strikes the vertical walls, invert the 
-        // x-velocity vector of ball
+        /*
+         * Если мяч ударяет по вертикальным стенкам, инвертируйте
+         * вектор скорости x шара
+         */
         if (ball.x + ball.r > W) {
             ball.vx = -ball.vx;
             ball.x = W - ball.r;
@@ -227,24 +331,30 @@ function update() {
         }
     }
 
-
-
-    // If flag is set, push the particles
+    /*
+     * Если установлен флаг, то нажмите на частицы
+     */
     if (flag == 1) {
         for (var k = 0; k < particlesCount; k++) {
             particles.push(new createParticles(particlePos.x, particlePos.y, multiplier));
         }
     }
 
-    // Emit particles/sparks
+    /*
+     * Излучение частиц / искр
+     */
     emitParticles();
 
-    // reset flag
+    /*
+     * сброс флага
+     */
     flag = 0;
 }
 
-//Function to check collision between ball and one of
-//the paddles
+/*
+ * Функция проверки столкновения шара с одним из
+ * весла
+ */
 function collides(b, p) {
     if (b.x + ball.r >= p.x && b.x - ball.r <= p.x + p.w) {
         if (b.y >= (p.y - p.h) && p.y > 0) {
@@ -257,7 +367,9 @@ function collides(b, p) {
     }
 }
 
-//Do this when collides == true
+/*
+ * Делаем это при столкновении == true
+ */
 function collideAction(ball, p) {
     ball.vy = -ball.vy;
 
@@ -286,7 +398,9 @@ function collideAction(ball, p) {
     flag = 1;
 }
 
-// Function for emitting particles
+/*
+ * Функция для излучения частиц
+ */
 function emitParticles() {
     for (var j = 0; j < particles.length; j++) {
         par = particles[j];
@@ -301,13 +415,17 @@ function emitParticles() {
         par.x += par.vx;
         par.y += par.vy;
 
-        // Reduce radius so that the particles die after a few seconds
+        /*
+         * Уменьшаем радиус, чтобы частицы погибали через несколько секунд
+         */
         par.radius -= 0.05;
 
     }
 }
 
-// Function for updating score
+/*
+ * Функция обновления балла
+ */
 function updateScore() {
     ctx.fillStlye = "white";
     ctx.font = "16px Arial, sans-serif";
@@ -316,7 +434,9 @@ function updateScore() {
     ctx.fillText("Очки: " + points, 20, 20);
 }
 
-// Function to run when the game overs
+/*
+ * Функция запускается при игре
+ */
 function gameOver() {
     ctx.fillStlye = "white";
     ctx.font = "20px Arial, sans-serif";
@@ -324,44 +444,64 @@ function gameOver() {
     ctx.textBaseline = "middle";
     ctx.fillText("Вы проиграли - Ваш счет " + points + "!", W / 2, H / 2 + 25);
 
-    // Stop the Animation
+    /*
+     * Остановка анимации
+     */
     cancelRequestAnimFrame(init);
 
-    // Set the over flag
+    /*
+     * Установите флаг over
+     */
     over = 1;
 
-    // Show the restart button
+    /*
+     * Показать кнопку перезапуска
+     */
     restartBtn.draw();
 }
 
-// Function for running the whole animation
+/*
+ * Функция для запуска всей анимации
+ */
 function animloop() {
     init = requestAnimFrame(animloop);
     draw();
 }
 
-// Function to execute at startup
+/*
+ * Функция для запуска при запуске
+ */
 function startScreen() {
     draw();
     startBtn.draw();
 }
 
-// On button click (Restart and start)
+/*
+ * Нажатие кнопки (перезагрузка и запуск)
+ */
 function btnClick(e) {
 
-    // Variables for storing mouse position on click
+    /*
+     * Переменные для хранения позиции мыши при нажатии
+     */
     var mx = e.pageX,
         my = e.pageY;
 
-    // Click start button
+    /*
+     * Нажмите кнопку «Пуск»
+     */
     if (mx >= startBtn.x && mx <= startBtn.x + startBtn.w) {
         animloop();
 
-        // Delete the start button after clicking it
+        /*
+         * Удалите кнопку запуска после нажатия
+         */
         startBtn = {};
     }
 
-    // If the game is over, and the restart button is clicked
+    /*
+     * Если игра закончилась, и нажата кнопка перезапуска
+     */
     if (over == 1) {
         if (mx >= restartBtn.x && mx <= restartBtn.x + restartBtn.w) {
             ball.x = 20;
@@ -370,11 +510,12 @@ function btnClick(e) {
             ball.vx = 4;
             ball.vy = 8;
             animloop();
-
             over = 0;
         }
     }
 }
 
-// Show the start screen
+/*
+ * Показать начальный экран
+ */
 startScreen();
