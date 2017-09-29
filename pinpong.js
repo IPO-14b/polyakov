@@ -80,3 +80,10 @@ window.requestAnimFrame = (function(){
             c: "white",
             vx: 4,
             vy: 8,
+			
+// Start Button object
+        startBtn = {
+            w: 100,
+            h: 50,
+            x: W / 2 - 50,
+            y: H / 2 - 25,
