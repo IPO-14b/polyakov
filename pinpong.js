@@ -80,3 +80,12 @@ window.requestAnimFrame = (function(){
             c: "white",
             vx: 4,
             vy: 8,
+
+            // Function for drawing ball on canvas
+            draw: function() {
+                ctx.beginPath();
+                ctx.fillStyle = this.c;
+                ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+                ctx.fill();
+            }
+        };
