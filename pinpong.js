@@ -80,10 +80,33 @@ window.requestAnimFrame = (function(){
             c: "white",
             vx: 4,
             vy: 8,
-			
-// Start Button object
+
+            // Function for drawing ball on canvas
+            draw: function() {
+                ctx.beginPath();
+                ctx.fillStyle = this.c;
+                ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+                ctx.fill();
+            }
+        };
+
+
+        // Start Button object
         startBtn = {
             w: 100,
             h: 50,
             x: W / 2 - 50,
             y: H / 2 - 25,
+
+            draw: function() {
+                ctx.strokeStyle = "white";
+                ctx.lineWidth = "2";
+                ctx.strokeRect(this.x, this.y, this.w, this.h);
+
+                ctx.font = "18px Arial, sans-serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillStlye = "white";
+                ctx.fillText("Старт", W / 2, H / 2);
+            }
+        };
