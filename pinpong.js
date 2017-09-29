@@ -67,3 +67,7 @@ window.requestAnimFrame = (function(){
             this.y = (pos == "top") ? 0 : H - this.h;
 
         }
+		
+		// Push two new paddles into the paddles[] array
+        paddles.push(new Paddle("bottom"));
+        paddles.push(new Paddle("top"));
