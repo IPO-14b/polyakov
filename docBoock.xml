@@ -1,191 +1,127 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- This document was created with Syntext Serna Free. --><!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "docbookV4.5/docbookx.dtd" []>
+<!-- This document was created with Syntext Serna Free. -->
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "docbookV4.5/docbookx.dtd" []>
 <article>
   <title>Ping pong</title>
-  <para>Pong является одной из самых ранних аркадных видеоигр, это теннисная спортивная игра с использованием простой двухмерной графики. До него были и другие видео игры, такие как Computer Space, однако Pong стал первой достаточно популярной видеоигрой.</para>
-  <para>Цель игры состоит в том, чтобы победить противника в настольный теннис, зарабатывая очки.</para>
-  <para>Pong является простейшим симулятором настольного тенниса. Небольшой квадратик, заменяющий пинг-понговый мячик, двигается по экрану по линейной траектории. Если он ударяется о периметр игрового поля или об одну из нарисованных ракеток, то его траектория изменяется в соответствии с углом столкновения.</para>
-  <para>Геймплей состоит в том, что игроки передвигают свои ракетки вертикально, чтобы защищать свои ворота. Игрок получает одно очко, если ему удаётся отправить мячик за ракетку оппонента.</para>
   <abstract>
-    <title>Пример 1: Рисовать шара</title>
-    <para> Функция рисования шара на холсте.</para>
-    <para>
-    draw: function() {
-</para>
-    <para>        ctx.beginPath();
-</para>
-    <para>        ctx.fillStyle = this.c;
-</para>
-    <para>        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
-</para>
-    <para>        ctx.fill();</para>
-    <para>
-    }</para>
+    <para>Pong является одной из самых ранних аркадных видеоигр, это теннисная спортивная игра с использованием простой двухмерной графики. До него были и другие видео игры, такие как Computer Space, однако Pong стал первой достаточно популярной видеоигрой.</para>
+    <para>Цель игры состоит в том, чтобы победить противника в настольный теннис, зарабатывая очки.</para>
+    <para>Pong является простейшим симулятором настольного тенниса. Небольшой квадратик, заменяющий пинг-понговый мячик, двигается по экрану по линейной траектории. Если он ударяется о периметр игрового поля или об одну из нарисованных ракеток, то его траектория изменяется в соответствии с углом столкновения.</para>
+    <para>Геймплей состоит в том, что игроки передвигают свои ракетки вертикально, чтобы защищать свои ворота. Игрок получает одно очко, если ему удаётся отправить мячик за ракетку оппонента.</para>
   </abstract>
-  <abstract>
-    <title>Пример 2: Функция для обновления позиций, оценки и всего. </title>
+  <section>
+    <title>Пример 1: Рисование шара</title>
+    <para>Функция рисования шара на холсте</para>
+    <programlisting>    draw: function() {
+        ctx.beginPath();
+        ctx.fillStyle = this.c;
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+        ctx.fill();
+    }</programlisting>
+  </section>
+  <section>
+    <title>Функция для обновления позиций, оценки и всего.</title>
     <para>В принципе, основная логика игры определена здесь</para>
-    <para>function update() {</para>
-    <para>
+    <programlisting>function update() {
 
-    /*
+    /**
      * Обновлять счёт
-     */</para>
-    <para>
+     */
     updateScore();
-</para>
-    <para>
-    /*
+
+    /**
      * Перемещение весла при перемещении мыши
      */
-</para>
-    <para>    if (mouse.x &amp;&amp; mouse.y) {
-</para>
-    <para>        for (var i = 1; i &lt; paddles.length; i++) {</para>
-    <para>
+    if (mouse.x &amp;&amp; mouse.y) {
+        for (var i = 1; i &lt; paddles.length; i++) {
             p = paddles[i];
             p.x = mouse.x - p.w / 2;
-</para>
-    <para>        }
-</para>
-    <para>    }</para>
-    <para>
+        }
+    }
 
-    /** Перемещение мяча
+    /**
+     * Перемещение мяча
      */
-</para>
-    <para>    ball.x += ball.vx;
-</para>
-    <para>    ball.y += ball.vy;</para>
-    <para>
+    ball.x += ball.vx;
+    ball.y += ball.vy;
 
-    /*
+    /**
      * Столкновение с веслами
      */
-</para>
-    <para>    p1 = paddles[1];</para>
-    <para>
-    p2 = paddles[2];</para>
-    <para>
+    p1 = paddles[1];
+    p2 = paddles[2];
 
-    /*
-     * Если мяч ударяет лопастями,
- инвертируем вектор скорости y шара,
- увеличиваем точки, воспроизводим звук столкновения,
-сохраняем позицию столкновения, чтобы искры могли.
- Исходя из этой позиции, установите переменную флага, и изменим множитель*/
-</para>
-    <para>    if (collides(ball, p1)) {
-</para>
-    <para>        collideAction(ball, p1);</para>
-    <para>
-    } else</para>
-    <para> if (collides(ball, p2)) {</para>
-    <para>
+    /**
+     * Если мяч ударяется о весло,
+     * инвертируем вектор скорости y шара,
+     * увеличиваем очки, воспроизводим звук столкновения,
+     * сохраняем позицию столкновения,
+     * Исходя из этой позиции, установите переменную флага,
+     * и изменим множитель
+     */
+    if (collides(ball, p1)) {
+        collideAction(ball, p1);
+    } else if (collides(ball, p2)) {
         collideAction(ball, p2);
-</para>
-    <para>    } else {
-</para>
-    <para>
-        /*
-         * Столкновение со стенами, Если мяч попадает в верхнюю / нижнюю часть,
- стены, запустите функцию gameOver ()
-         */
-</para>
-    <para>
-        if (ball.y + ball.r &gt; H) {</para>
-    <para>
-            ball.y = H - ball.r;</para>
-    <para>
-            gameOver();
-</para>
-    <para>        } else</para>
-    <para> if (ball.y &lt; 0) {</para>
-    <para>
-            ball.y = ball.r;
-</para>
-    <para>            gameOver();
-</para>
-    <para>        }</para>
-    <para>
+    } else {
 
-        /*
-         * Если мяч ударяет по вертикальным стенкам, инвертируйте
- вектор скорости x шара
-         */</para>
-    <para>
-        if (ball.x + ball.r &gt; W) {</para>
-    <para>
+        /**
+         * Столкновение со стенами, Если мяч попадает в верхнюю / нижнюю часть,
+         * стены, запускаем функцию gameOver ()
+         */
+
+        if (ball.y + ball.r &gt; H) {
+            ball.y = H - ball.r;
+            gameOver();
+        } else if (ball.y &lt; 0) {
+            ball.y = ball.r;
+            gameOver();
+        }
+
+        /**
+         * Если мяч ударяет по вертикальным стенкам, инвертируем
+         * вектор скорости x шара
+         */
+        if (ball.x + ball.r &gt; W) {
             ball.vx = -ball.vx;
             ball.x = W - ball.r;
-</para>
-    <para>        } else </para>
-    <para>if (ball.x - ball.r &lt; 0) {</para>
-    <para>
+        } else if (ball.x - ball.r &lt; 0) {
             ball.vx = -ball.vx;
-            ball.x = ball.r;</para>
-    <para>
-        }</para>
-    <para>
-    }</para>
-    <para>
-
-    /*
-Если установлен флаг, то нажмите на частицы
-     */</para>
-    <para>
-    if (flag == 1) {
-</para>
-    <para>        for (var k = 0; k &lt; particlesCount; k++) {</para>
-    <para>
-            particles.push(new createParticles(particlePos.x, particlePos.y, multiplier));</para>
-    <para>
-        }</para>
-    <para>
+            ball.x = ball.r;
+        }
     }
-</para>
-    <para>
-    /*
+
+    if (flag == 1) {
+        for (var k = 0; k &lt; particlesCount; k++) {
+            particles.push(new createParticles(particlePos.x, particlePos.y, multiplier));
+        }
+    }
+
+    /**
      * Излучение частиц / искр
      */
-</para>
-    <para>    emitParticles();
-</para>
-    <para>
-    /*
+    emitParticles();
+
+    /**
      * сброс флага
      */
-</para>
-    <para>    flag = 0;
-</para>
-    <para>}</para>
-  </abstract>
-  <abstract>
-    <title>Пример 3: Проверка столкновения шара </title>
+    flag = 0;
+}</programlisting>
+  </section>
+  <section>
+    <title>Проверка столкновения шара </title>
     <para>Функция проверки столкновения шара с одним из
- весла
-</para>
-    <para>
-function collides(b, p) {</para>
-    <para>
-    if (b.x + ball.r &gt;= p.x &amp;&amp; b.x - ball.r &lt;= p.x + p.w) {</para>
-    <para>
-        if (b.y &gt;= (p.y - p.h) &amp;&amp; p.y &gt; 0) {</para>
-    <para>
+ вёсел.</para>
+    <programlisting>function collides(b, p) {
+    if (b.x + ball.r &gt;= p.x &amp;&amp; b.x - ball.r &lt;= p.x + p.w) {
+        if (b.y &gt;= (p.y - p.h) &amp;&amp; p.y &gt; 0) {
             paddleHit = 1;
             return true;
-</para>
-    <para>        } else </para>
-    <para>if (b.y &lt;= p.h &amp;&amp; p.y == 0) {</para>
-    <para>
+        } else if (b.y &lt;= p.h &amp;&amp; p.y == 0) {
             paddleHit = 2;
-            return true;</para>
-    <para>
-        } else </para>
-    <para>return false;</para>
-    <para>
-    }</para>
-    <para>
-}</para>
-  </abstract>
+            return true;
+        } else return false;
+    }
+}</programlisting>
+  </section>
 </article>
