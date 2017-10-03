@@ -29,22 +29,21 @@ window.cancelRequestAnimFrame = (function() {
  * Инициализация холста и переменных
  *
  *@var object ctx
- *@var int W
- *@var int H
- *@var int particles
- *@var object ball
- *@var int paddles
- *@var object mous
- *@var int points
- *@var int fps
- *@var int particlesCount
- *@var int flag
- *@var object particlePos
- *@var int multipler
- *@var object startBtn
- *@var object restartBtn
- *@var int over
- *@var int init
+ *@var int W ширина
+ *@var int H высота холста
+ *@var int particles частицы
+ *@var object ball шар
+ *@var int paddles вёсла
+ *@var object mouse мыши
+ *@var int points очки
+ *@var int fps фпс
+ *@var int particlesCount количество частиц
+ *@var int flag флаг игры
+ *@var object particlePos позиция частиц
+ *@var object startBtn кнопка старта
+ *@var object restartBtn кнопка рестарта
+ *@var int over конец игры
+ *@var int init анимация
  */
 var canvas = document.getElementById("canvas"),
     ctx = canvas.getContext("2d"),
@@ -59,77 +58,61 @@ var canvas = document.getElementById("canvas"),
     particlesCount = 20,
     flag = 0,
     particlePos = {},
-    multipler = 1,
     startBtn = {},
     restartBtn = {},
     over = 0,
     init,
     paddleHit;
 
-/**
- * Добавить события mousemove и mousedown на холст
- */
 canvas.addEventListener("mousemove", trackPosition, true);
 canvas.addEventListener("mousedown", btnClick, true);
 
-/*
- * Инициализировать звук столкновения
+/**
+ * Инициализация звука столкновения
  */
 collision = document.getElementById("collide");
 
-/*
- * Установите ширину и ширину холста в полноэкранном режиме.
+/**
+ * Присваинвание ширины и высоты холста в полноэкранном режиме.
  */
 canvas.width = W;
 canvas.height = H;
 
-/*
+/**
  * Функция рисования холста
  */
 function paintCanvas() {
-    ctx.fillStyle = "black";
+    fillStyle = "black";
     ctx.fillRect(0, 0, W, H);
 }
 
-/*
+/**
  * Функция создания весла
+ *
+ * @var int h высота
+ * @var int w ширина
+ * @var int y позиция по y
+ * @var int x позиция по x
  */
 function Paddle(pos) {
-    /*
-     * Высота и ширина
-     *
-     * @var int h
-     * @var int w
-     */
     this.h = 5;
     this.w = 150;
-
-    /*
-     * Позиция доски
-     *
-     * @var int y
-     * @var int x
-     */
     this.x = W / 2 - this.w / 2;
     this.y = (pos == "top") ? 0 : H - this.h;
-
 }
 
-/*
- * Вставьте два новых весла в массив paddles []
- */
 paddles.push(new Paddle("bottom"));
 paddles.push(new Paddle("top"));
 
-/*
+/**
  * Объект Ball
  *
- *@var int x
- *@var int y
- *@var int r
- *@var object c
- *@var int vx
- *@var int vy
+ *@var int x позиция
+ *@var int y позиция
+ *@var int r радиус
+ *@var object c цвет
+ *@var int vx вектор скорости
+ *@var int vy вектор скорости
  */
 ball = {
     x: 50,
@@ -139,7 +122,7 @@ ball = {
     vx: 4,
     vy: 8,
 
-    /*
+    /**
      * Функция рисования шара на холсте
      */
     draw: function() {
@@ -150,13 +133,13 @@ ball = {
     }
 };
 
-/*
+/**
  * Объект Button
  *
- *@var int w
- *@var int h
- *@var int x
- *@var int y
+ *@var int w ширина
+ *@var int h высота
+ *@var int x позиция по x
+ *@var int y позиция по y
  */
 startBtn = {
     w: 100,
@@ -168,7 +151,6 @@ startBtn = {
         ctx.strokeStyle = "white";
         ctx.lineWidth = "2";
         ctx.strokeRect(this.x, this.y, this.w, this.h);
-
         ctx.font = "18px Arial, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -177,13 +159,13 @@ startBtn = {
     }
 };
 
-/*
+/**
  * Объект Restart Button
  *
- *@var int w
- *@var int h
- *@var int x
- *@var int y
+ *@var int w ширина
+ *@var int h высота
+ *@var int x позиция
+ *@var int y позиция
  */
 restartBtn = {
     w: 100,
@@ -195,7 +177,6 @@ restartBtn = {
         ctx.strokeStyle = "white";
         ctx.lineWidth = "2";
         ctx.strokeRect(this.x, this.y, this.w, this.h);
-
         ctx.font = "18px Arial, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -204,42 +185,38 @@ restartBtn = {
     }
 };
 
-/*
+/**
  * Функция создания объекта частиц
  *
- *@var int x
- *@var int y
- *@var int vx
- *@var int vy
+ *@var int x позиция
+ *@var int y позиция
+ *@var int vx вектор скорости
+ *@var int vy вектор скорости
  */
 function createParticles(x, y, m) {
     this.x = x || 0;
     this.y = y || 0;
-
     this.radius = 1.2;
-
     this.vx = -1.5 + Math.random() * 3;
     this.vy = m * Math.random() * 1.5;
 }
 
-/*
+/**
  * Рисуем все на холсте
  */
 function draw() {
     paintCanvas();
     for (var i = 0; i < paddles.length; i++) {
         p = paddles[i];
-
         ctx.fillStyle = "white";
         ctx.fillRect(p.x, p.y, p.w, p.h);
     }
-
     ball.draw();
     update();
 }
 
-/*
- * Функция увеличения скорости после каждых 5 точек
+/**
+ * Функция увеличения скорости после каждых 5 ударов
  */
 function increaseSpd() {
     if (points % 4 == 0) {
@@ -250,7 +227,7 @@ function increaseSpd() {
     }
 }
 
-/*
+/**
  * Отслеживание положения курсора мыши
  */
 function trackPosition(e) {
@@ -258,18 +235,18 @@ function trackPosition(e) {
     mouse.y = e.pageY;
 }
 
-/*
+/**
  * Функция для обновления позиций, оценки и всего.
- * В принципе, основная логика игры определена здесь
+ * В принципе, основная логика игры определена здесь.
  */
 function update() {
 
-    /*
+    /**
      * Обновлять счёт
      */
     updateScore();
 
-    /*
+    /**
      * Перемещение весла при перемещении мыши
      */
     if (mouse.x && mouse.y) {
@@ -279,23 +256,23 @@ function update() {
         }
     }
 
-    /*
+    /**
      * Перемещение мяча
      */
     ball.x += ball.vx;
     ball.y += ball.vy;
 
-    /*
+    /**
      * Столкновение с веслами
      */
     p1 = paddles[1];
     p2 = paddles[2];
 
-    /*
-     * Если мяч ударяет лопастями,
+    /**
+     * Если мяч ударяется о весло,
      * инвертируем вектор скорости y шара,
-     * увеличиваем точки, воспроизводим звук столкновения,
-     * сохраняем позицию столкновения, чтобы искры могли
+     * увеличиваем очки, воспроизводим звук столкновения,
+     * сохраняем позицию столкновения,
      * Исходя из этой позиции, установите переменную флага,
      * и изменим множитель
      */
@@ -305,9 +282,9 @@ function update() {
         collideAction(ball, p2);
     } else {
 
-        /*
+        /**
          * Столкновение со стенами, Если мяч попадает в верхнюю / нижнюю часть,
-         * стены, запустите функцию gameOver ()
+         * стены, запускаем функцию gameOver ()
          */
 
         if (ball.y + ball.r > H) {
@@ -318,8 +295,8 @@ function update() {
             gameOver();
         }
 
-        /*
-         * Если мяч ударяет по вертикальным стенкам, инвертируйте
+        /**
+         * Если мяч ударяет по вертикальным стенкам, инвертируем
          * вектор скорости x шара
          */
         if (ball.x + ball.r > W) {
@@ -331,27 +308,24 @@ function update() {
         }
     }
 
-    /*
-     * Если установлен флаг, то нажмите на частицы
-     */
     if (flag == 1) {
         for (var k = 0; k < particlesCount; k++) {
             particles.push(new createParticles(particlePos.x, particlePos.y, multiplier));
         }
     }
 
-    /*
+    /**
      * Излучение частиц / искр
      */
     emitParticles();
 
-    /*
+    /**
      * сброс флага
      */
     flag = 0;
 }
 
-/*
+/**
  * Функция проверки столкновения шара с одним из
  * весла
  */
@@ -367,8 +341,8 @@ function collides(b, p) {
     }
 }
 
-/*
- * Делаем это при столкновении == true
+/**
+ * Делаем это если столкновение == true
  */
 function collideAction(ball, p) {
     ball.vy = -ball.vy;
@@ -387,8 +361,9 @@ function collideAction(ball, p) {
     increaseSpd();
 
     if (collision) {
-        if (points > 0)
+        if (points > 0) {
             collision.pause();
+		}
 
         collision.currentTime = 0;
         collision.play();
@@ -398,7 +373,7 @@ function collideAction(ball, p) {
     flag = 1;
 }
 
-/*
+/**
  * Функция для излучения частиц
  */
 function emitParticles() {
@@ -415,7 +390,7 @@ function emitParticles() {
         par.x += par.vx;
         par.y += par.vy;
 
-        /*
+        /**
          * Уменьшаем радиус, чтобы частицы погибали через несколько секунд
          */
         par.radius -= 0.05;
@@ -423,8 +398,8 @@ function emitParticles() {
     }
 }
 
-/*
- * Функция обновления балла
+/**
+ * Функция обновления шара
  */
 function updateScore() {
     ctx.fillStlye = "white";
@@ -434,7 +409,7 @@ function updateScore() {
     ctx.fillText("Очки: " + points, 20, 20);
 }
 
-/*
+/**
  * Функция запускается при игре
  */
 function gameOver() {
@@ -444,23 +419,23 @@ function gameOver() {
     ctx.textBaseline = "middle";
     ctx.fillText("Вы проиграли - Ваш счет " + points + "!", W / 2, H / 2 + 25);
 
-    /*
+    /**
      * Остановка анимации
      */
     cancelRequestAnimFrame(init);
 
-    /*
-     * Установите флаг over
+    /**
+     * Установка флаг over
      */
     over = 1;
 
-    /*
+    /**
      * Показать кнопку перезапуска
      */
     restartBtn.draw();
 }
 
-/*
+/**
  * Функция для запуска всей анимации
  */
 function animloop() {
@@ -468,38 +443,38 @@ function animloop() {
     draw();
 }
 
-/*
- * Функция для запуска при запуске
+/**
+ * Функция создание начального экрана
  */
 function startScreen() {
     draw();
     startBtn.draw();
 }
 
-/*
+/**
  * Нажатие кнопки (перезагрузка и запуск)
  */
 function btnClick(e) {
 
-    /*
+    /**
      * Переменные для хранения позиции мыши при нажатии
      */
     var mx = e.pageX,
         my = e.pageY;
 
-    /*
+    /**
      * Нажмите кнопку «Пуск»
      */
     if (mx >= startBtn.x && mx <= startBtn.x + startBtn.w) {
         animloop();
 
-        /*
+        /**
          * Удалите кнопку запуска после нажатия
          */
         startBtn = {};
     }
 
-    /*
+    /**
      * Если игра закончилась, и нажата кнопка перезапуска
      */
     if (over == 1) {
@@ -515,7 +490,7 @@ function btnClick(e) {
     }
 }
 
-/*
+/**
  * Показать начальный экран
  */
 startScreen();
